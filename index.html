@@ -1,0 +1,772 @@
+<html>
+  <head>
+    <title>
+      Minesweeper | Stephanie's Website
+    </title>
+    <style>
+      .titlebar{
+        background: -webkit-linear-gradient(#fff, #111);
+        font-size: 50px;
+        font-family: "Impact";
+        padding: 10px;
+      }
+      .menuBar{
+        overflow: hidden;
+        border: 1px solid #222;
+        background-color: #333;
+      }
+      .tablinks{
+        background-color: inherit;
+        float: left;
+        border: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        transition: 0.3s;
+        font-size: 17px;
+        color: white;
+      }
+      .tablinks:hover{
+        background-color: #111;  
+      }
+      .modal{
+        display: none;
+        position: fixed; 
+        left: 0;
+        top: 0;
+        width: 100%; 
+        height: 100%; 
+        background-color: rgba(0,0,0,0.4); 
+      }
+      .tabHeader{
+        font-family: "Arial";
+        padding: 5px 5px 5px 5px;
+        font-size: 20px;
+        border-bottom: 2px solid black;
+      }
+      .gameOptionsContent {
+        background-color: white;
+        position: fixed;
+        overflow: scroll;
+        padding: 10px 10px 10px 10px;
+        top: 29%;
+        left: 40%;
+        border: 1px solid #888;
+        width: 20%;
+        height: 42%;
+        font-size: 15px;
+      }
+      .gameControlsContent{
+        background-color: white;
+        position: fixed;
+        overflow: scroll;
+        padding: 10px 10px 10px 10px;
+        top: 31%;
+        left: 40%;
+        border: 1px solid #888;
+        width: 20%;
+        height: 38%;
+        font-size: 15px;  
+      }
+      .gameInstructionsContent{
+        background-color: white;
+        position: fixed;
+        padding: 10px 10px 10px 10px;
+        overflow: scroll;
+        top: 30%;
+        left: 35%;
+        border: 1px solid #888;
+        width: 30%;
+        height: 40%;
+        font-size: 15px;  
+      }
+      .scoreContent{
+        background-color: white;
+        border: 5px solid black;
+      }
+      .gameContent{
+        background: -webkit-linear-gradient(gray, lightGray);
+        border: 30px ridge gray;
+      }
+      .end-content {
+        background-color: #fefefe;
+        position: fixed;
+        top: 40%;
+        left: 35%;
+        border: 1px solid #888;
+        width: 30%;
+        height: 20%;
+        font-size: 45px;
+        font-family: "Courier New";
+      }  
+      .xClose {
+        color: black;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+      .xClose:hover,
+      .xClose:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .close {
+        color: black;
+        font-size: 15px;
+        font-weight: bold;
+      }   
+      .close:hover;
+      .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  
+  <body>
+    <!-- Title Bar Code -->
+    <div class="titleBar" id="theTitle">
+      <img src="Minesweeper_Icon.png" height=150 width=150 style="float:left">
+      <img src="Minesweeper_Icon.png" height=150 width=150 style="float:right">
+      <center>
+        <p>
+          Minesweeper
+          <br>
+          <br>
+        </p>
+      </center>
+    </div>
+    
+    <!-- Menu Bar Code -->
+    <div class="menuBar">
+      <button class="tablinks" onclick="openOptions()">Game Options</button>
+      <button class="tablinks" onclick="openControls()">Game Controls</button>
+      <button class="tablinks" onclick="openInstructions()">How To Play</button> 
+    </div>
+    
+    <!-- Game Options Content Code -->
+    <div id="optionsScreen" class="modal">
+      <!-- Modal content -->
+      <div id="optionsContent" class="gameOptionsContent">
+        <div id="optionsTitle" class="tabHeader">
+          <span class="xClose" onclick="clickCloseOptions()">&times;</span>
+          <center>
+            <p>
+              Game Options
+            </p>
+          </center>
+        </div>  
+        <br>
+        <form difficulty="">
+          <input type="radio" name="level" id="easy" > Easy<br>
+          <input type="radio" name="level" id="normal"  Checked> Normal<br>
+          <input type="radio" name="level" id="difficult" > Difficult<br>
+        </form>
+        <form >
+          Custom Game Board:<br>
+          Height:<br>
+          <input type="text" name="height" id="height" value="15" >
+          <br>
+          Width:<br>
+          <input type="text" name="width" id="width" value="20">
+        </form> 
+        <button type="button" onclick="newGame()">New Game</button>
+      </div>
+    </div>
+    
+    <!-- Game Controls Content Code -->
+    <div id="controlsScreen" class="modal">
+      <!-- Modal Content -->
+      <div id="controlsContent" class="gameControlsContent">
+        <div id="controlsTitle" class="tabHeader">
+          <span class="xClose" onclick="clickClose()">&times;</span>
+          <center>
+            <p>
+              Game Controls
+            </p>
+          </center>
+        </div>
+        <p style="font-weight: bold">
+          Desktop:<br>  
+        </p>
+        <ul>
+          <li>Left Click to open a square</li>
+          <li>Hold Shift and Click to flag a square</li>
+          <li>Hold Shift and Click a flagged square to unflag it</li>
+        </ul>
+        <p style="font-weight: bold">
+          Mobile:<br>
+        </p>
+        <ul>  
+          <li>Tap to open a square</li>
+          <li>Tap the flag buttton to set it to flagON to flag and unflag the squares</li>
+          <li>Tap the flag button to set it to flagOFF to be able to open the squares</li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- How to Play Content Code -->
+    <div id="instructionsScreen" class="modal">
+      <!-- Modal Content -->
+      <div id="instructionsContent" class="gameInstructionsContent">
+        <div id="instructionsTitle" class="tabHeader">
+          <span class="xClose" onclick="clickClose()">&times;</span>
+          <center>
+            <p>
+              How To Play
+            </p>
+          </center>  
+        </div>
+        <p style="font-weight: bold">
+          Objective of the Game: 
+        </p>
+        <p>
+          Clear the entire game board without pressing a mine.<br>
+          <br>
+          If the square you press contains a number, this number indicates how many mines are around it (goes up to 8).
+          <br>
+        </p>
+        <center>
+          <img src="instructionsOne.png" height=120 width=120>
+          <img src="instructionsTwo.png" height=120 width=120>
+          <p style="font-style: italic">
+            There is one mine around the center square.
+          </p>
+        </center>
+        <p>
+          If you believe a square holds a mine, flag the square.
+          <br>
+        </p>
+        <center>
+          <img src="instructionsThree.png" height=120 width=120>
+          <img src="instructionsFour.png" height=120 width=120>
+          <p style="font-style: italic">
+            This unopened square must be a mine.
+          </p>
+        </center>
+        <p>
+          Flag all the mines and open all of the other squares to win!
+        </p>
+      </div>
+    </div>
+    
+    <!-- Game Body Code-->
+    <div class="gameContent" id="gameBody">
+      <center>
+        <br>
+        <canvas class="scoreContent" id="scoreCanvas" width="100" height= "55"></canvas>
+        <br>
+        <br>
+        <button onclick="setBoard()">Reset Game</button>
+        <br>
+        <br>
+        <img src="flagOn.png" id=flagOn height=75 width=75 style="display: none" onclick="flaggedOff()">
+        <img src="flagOff.png" id=flagOff height=75 width=75 style="display: block" onclick="flaggedOn()">
+        <br>
+        <br>
+        <canvas id="gameScreen" width= "800" height= "600" onclick = "clickCanvas(event)"></canvas>
+        <br>
+        <br>
+        <br>
+      </center>
+    </div>
+    
+    <!-- Game Over Code -->
+    <div id="loseScreen" class="modal">
+      <!-- Modal content -->
+      <div class="end-content">
+        <center>
+          <p>Game Over!</p>
+          <button id="tryAgain" class="close" onclick="againButton()">Try Again</button>
+        </center>
+      </div>
+    </div>
+    
+    <!-- You Won Code -->
+    <div id="winScreen" class="modal">
+      <!-- Modal content -->
+      <div class="end-content">
+        <!-- <span class="close">&times;</span> -->
+        <center>
+          <p>You Won!</p>
+          <button id="playAgain" class="close" onclick="againButton()">Play Again</button>
+        </center>
+      </div>
+    </div>
+    
+    <script>
+      //All The Blocks:
+      var unopenedSquare = document.createElement("IMG");
+      unopenedSquare.setAttribute("src","Unopened Square.png");
+      var mine = document.createElement("IMG");
+      mine.setAttribute("src","Mine.jpg");
+      var blankBlock = document.createElement("IMG");
+      blankBlock.setAttribute("src","BlankBlock.png");
+      var flagBlock = document.createElement("IMG");
+      flagBlock.setAttribute("src","flagBlock.png");
+      var oneBlock = document.createElement("IMG");
+      oneBlock.setAttribute("src","1Block.png");
+      var twoBlock = document.createElement("IMG");
+      twoBlock.setAttribute("src","2Block.png");
+      var threeBlock = document.createElement("IMG");
+      threeBlock.setAttribute("src","3Block.png");
+      var fourBlock = document.createElement("IMG");
+      fourBlock.setAttribute("src","4Block.png");
+      var fiveBlock = document.createElement("IMG");
+      fiveBlock.setAttribute("src","5Block.png");
+      var sixBlock = document.createElement("IMG");
+      sixBlock.setAttribute("src","6Block.png");
+      var sevenBlock = document.createElement("IMG");
+      sevenBlock.setAttribute("src","7Block.png");
+      var eightBlock = document.createElement("IMG");
+      eightBlock.setAttribute("src","8Block.png");
+      
+      //Menu Bar:
+      var optionsScreen = document.getElementById("optionsScreen");
+      var controlsScreen = document.getElementById("controlsScreen");
+      var instructionsScreen = document.getElementById("instructionsScreen");
+      var xClose = document.getElementsByClassName("xClose")[0];
+      
+      //Game Customization
+      var currentMode = "";
+      var height = 15;
+      var width = 20;
+      var canCreate = true;
+      var difficultyLevel = 36;
+      
+      //Game Board
+      var canvas = document.getElementById("gameScreen");
+      var gameCanvas = canvas.getContext("2d");
+      var mineCounter = 0;
+      var gameArray = [];
+      
+      //Scoring Variables
+      var score = 0;
+      var scoreCan = document.getElementById("scoreCanvas");
+      var scoreCanvas = scoreCan.getContext("2d");
+      scoreCanvas.font = "50px Arial";
+      scoreCanvas.fillText(score,35,45);
+      
+      //Flagging Variables
+      var shiftButtonpressed = false;
+      var unflag = false;
+      
+      //Win and Lose Variables:
+      var win = true;
+      var gameOver = document.getElementById("loseScreen");
+      var tryAgain = document.getElementById("tryAgain");
+      var playAgain = document.getElementById("playAgain");
+      var youWon = document.getElementById("winScreen");
+
+      /*
+      Block Numbers Key:
+      -1 = Mine
+      0-8 = Numbers of the block (unopened)
+      9-18 = Flagged block (number of the block + 10)
+      19-28 = Numbers of the block (opened)
+      */
+      
+
+      function createGameArray(height, width){
+        for (var j = 0; j < height; j++){
+          var columns = [];
+          for (var i = 0; i < width; i++){
+             columns[i] = 0;
+          }
+          gameArray[j] = columns;
+        }
+      }
+      function mineBlockOne() {
+        if(gameArray[j-1][i-1] == -1) {
+          mineCounter++;
+        }
+      }
+      function mineBlockTwo() {
+        if(gameArray[j-1][i] == -1) {
+          mineCounter++;
+        }
+      }
+      function mineBlockThree() {
+        if(gameArray[j-1][i+1] == -1) {
+          mineCounter++;
+        }
+      }
+      function mineBlockFour() {
+        if(gameArray[j][i-1] == -1) {
+          mineCounter++;
+        }
+      }
+      function mineBlockFive() {
+        if(gameArray[j][i+1] == -1) {
+          mineCounter++;
+        }
+      }
+      function mineBlockSix() {
+        if(gameArray[j+1][i-1] == -1) {
+          mineCounter++;
+        }
+      }
+      function mineBlockSeven() {
+        if(gameArray[j+1][i] == -1) {
+          mineCounter++;
+        }
+      }
+      function mineBlockEight() {
+        if(gameArray[j+1][i+1] == -1) {
+          mineCounter++;
+        }
+      }
+      function updateScore(number) {
+        score = score + number;
+        scoreCanvas.clearRect(0, 0, scoreCan.width, scoreCan.height);
+        if(score<10) {
+          scoreCanvas.fillText(score,35,45);
+        } else if(score<100){
+          scoreCanvas.fillText(score,22,45);  
+        } else {
+          scoreCanvas.fillText(score,8,45);  
+        }
+      }
+      function clearBoard() {
+        score = 0;
+        scoreCanvas.clearRect(0, 0, scoreCan.width, scoreCan.height);
+        scoreCanvas.fillText(score,35,45);
+        scoreCanvas.fillText(score,35,45);
+        for ( i = 0; i < width; i++) {
+          for ( j = 0; j < height; j++) {
+            gameArray[j][i] = 0;  
+          }
+        }
+      }
+      function setBoard() {
+        clearBoard();
+        for (i = 0; i < difficultyLevel; i++) {
+          gameArray[Math.floor(Math.random() * height)][Math.floor(Math.random() * width)] = -1;  
+        }
+        for (i = 0; i < width; i++) {
+          for (j = 0; j < height; j++) {
+            gameCanvas.drawImage(unopenedSquare, 40*i,40*j,40,40);
+            if(!(gameArray[j][i] == -1)) {
+              if(j>0) {
+                mineBlockTwo();
+                if(i>0) {
+                  mineBlockOne();
+                }
+                if(i<(width - 1)) {
+                  mineBlockThree();  
+                }
+              }
+              if(j<(height - 1)) {
+                mineBlockSeven();
+                if(i>0) {
+                  mineBlockSix();  
+                }
+                if(i<(width - 1)) {
+                  mineBlockEight();  
+                }
+              }
+              if(i>0) {
+                mineBlockFour();  
+              }
+              if(i<(width - 1)) {
+                mineBlockFive();  
+              }
+              gameArray[j][i] = mineCounter;
+              mineCounter = 0;
+            }
+            
+          }
+        }
+      }
+      function checkBox(j,i) {
+        if(i<0||i>(width - 1)||j<0||j>(height - 1)||gameArray[j][i]>8) {
+          return(false);  
+        } else {
+          if(gameArray[j][i]===0) {
+            gameCanvas.drawImage(blankBlock, 40*i,40*j,40,40); 
+            gameArray[j][i] = gameArray[j][i] + 20;
+            checkBox(j-1,i-1);
+            checkBox(j-1,i);
+            checkBox(j-1,i+1);
+            checkBox(j,i-1);
+            checkBox(j,i+1);
+            checkBox(j+1,i-1);
+            checkBox(j+1,i);
+            checkBox(j+1,i+1);
+          }
+          if(gameArray[j][i]===1) {
+            gameCanvas.drawImage(oneBlock, 40*i,40*j,40,40); 
+            gameArray[j][i] = gameArray[j][i] + 20;
+            updateScore(1);
+          } 
+          if(gameArray[j][i]===2) {
+            gameCanvas.drawImage(twoBlock, 40*i,40*j,40,40);
+            gameArray[j][i] = gameArray[j][i] + 20;
+            updateScore(2);
+          } 
+          if(gameArray[j][i]===3) {
+            gameCanvas.drawImage(threeBlock, 40*i,40*j,40,40); 
+            gameArray[j][i] = gameArray[j][i] + 20;
+            updateScore(3);
+          } 
+          if(gameArray[j][i]===4) {
+            gameCanvas.drawImage(fourBlock, 40*i,40*j,40,40); 
+            gameArray[j][i] = gameArray[j][i] + 20;
+            updateScore(4);
+          } 
+          if(gameArray[j][i]===5) {
+            gameCanvas.drawImage(fiveBlock, 40*i,40*j,40,40); 
+            gameArray[j][i] = gameArray[j][i] + 20;
+            updateScore(5);
+          } 
+          if(gameArray[j][i]===6) {
+            gameCanvas.drawImage(sixBlock, 40*i,40*j,40,40); 
+            gameArray[j][i] = gameArray[j][i] + 20;
+            updateScore(6);
+          } 
+          if(gameArray[j][i]===7) {
+            gameCanvas.drawImage(sevenBlock, 40*i,40*j,40,40);
+            gameArray[j][i] = gameArray[j][i] + 20;
+            updateScore(7);
+          } 
+          if(gameArray[j][i]===8) {
+            gameCanvas.drawImage(eightBlock, 40*i,40*j,40,40); 
+            gameArray[j][i] = gameArray[j][i] + 20;
+            updateScore(8);
+          }
+          if(gameArray[j][i] == -1) {
+            gameCanvas.drawImage(mine, 40*i,40*j,40,40);
+            gameArray[j][i] = gameArray[j][i] + 20;
+            gameoverScreen();
+          }
+        }
+      }
+      function gameoverScreen() {
+        for (i = 0; i < width; i++) {
+          for (j = 0; j < height; j++) {
+            if((gameArray[j][i]>=9)&&(gameArray[j][i]<=18)) {
+              gameArray[j][i] = gameArray[j][i] - 10;  
+            }
+            
+            if(gameArray[j][i] == 1) {
+              gameCanvas.drawImage(oneBlock, 40*i,40*j,40,40);
+              gameArray[j][i] = gameArray[j][i] + 20;
+            }
+            if(gameArray[j][i] == 2) {
+              gameCanvas.drawImage(twoBlock, 40*i,40*j,40,40);
+              gameArray[j][i] = gameArray[j][i] + 20;
+            }
+            if(gameArray[j][i] == 3) {
+              gameCanvas.drawImage(threeBlock, 40*i,40*j,40,40); 
+              gameArray[j][i] = gameArray[j][i] + 20;
+            }
+            if(gameArray[j][i] == 4) {
+              gameCanvas.drawImage(fourBlock, 40*i,40*j,40,40); 
+              gameArray[j][i] = gameArray[j][i] + 20;
+            }
+            if(gameArray[j][i] == 5) {
+              gameCanvas.drawImage(fiveBlock, 40*i,40*j,40,40); 
+              gameArray[j][i] = gameArray[j][i] + 20;
+            }
+            if(gameArray[j][i] == 6) {
+              gameCanvas.drawImage(sixBlock, 40*i,40*j,40,40); 
+              gameArray[j][i] = gameArray[j][i] + 20;
+            }
+            if(gameArray[j][i] == 7) {
+              gameCanvas.drawImage(sevenBlock, 40*i,40*j,40,40); 
+              gameArray[j][i] = gameArray[j][i] + 20;
+            }
+            if(gameArray[j][i] == 8) {
+              gameCanvas.drawImage(eightBlock, 40*i,40*j,40,40);
+              gameArray[j][i] = gameArray[j][i] + 20;
+            }
+            if(gameArray[j][i] == 0) {
+              gameCanvas.drawImage(blankBlock, 40*i,40*j,40,40);
+              gameArray[j][i] = gameArray[j][i] + 20;
+              }
+            if(gameArray[j][i] == -1) {
+              gameCanvas.drawImage(mine, 40*i,40*j,40,40);
+              gameArray[j][i] = gameArray[j][i] + 20;
+            }
+          }
+        }
+        gameOver.style.display = "block";
+      }
+      function checkWin() {
+        win = true;
+        for(var i = 0; i < width; i++) {
+          for(var j = 0; j < height; j++) {
+            if(((gameArray[j][i]>=-1) && (gameArray[j][i]<=8)) || ((gameArray[j][i]>=10)&&(gameArray[j][i]<=19))) {
+              win = false; 
+            }
+          }
+        }
+        if(win === true) {
+          youWon.style.display = "block";
+        }
+      }
+      function clickCanvas(event) {
+        var x = event.pageX - canvas.offsetLeft;
+        var y = event.pageY - canvas.offsetTop;
+        for (var i = 0; i < width; i++) {
+          for (var j = 0; j < height; j++) {
+            if( (x>(40*i)) && (x<(40*(i+1))) && (y>(40*j)) && (y<(40*(j+1))) ) {
+              if(shiftButtonpressed === true) {
+                if(gameArray[j][i] < 9) {
+                  gameArray[j][i] = gameArray[j][i] + 10; 
+                } else if((gameArray[j][i]>=9)&&(gameArray[j][i]<=18)){
+                  unflag = true;
+                }     
+              }
+              if((gameArray[j][i] >= 9)&&(gameArray[j][i] <= 18)) {
+                gameCanvas.drawImage(flagBlock, 40*i, 40*j,40,40);  
+              }
+              checkBox(j,i)
+              if(unflag === true) {
+                gameCanvas.drawImage(unopenedSquare, 40*i,40*j,40,40);
+                gameArray[j][i] = gameArray[j][i] - 10;
+                unflag = false;
+              }
+            }
+          }
+        }
+        checkWin();
+      }
+      function flaggedOff() {
+        shiftButtonpressed = false;
+        document.getElementById("flagOn").style.display = "none";
+        document.getElementById("flagOff").style.display = "block";
+      }
+      function flaggedOn() {
+        shiftButtonpressed = true;
+        document.getElementById("flagOn").style.display = "block";
+        document.getElementById("flagOff").style.display = "none";
+      }
+      function shiftDownHandler(event) {
+        if(event.keyCode == 16) {
+          shiftButtonpressed = true;
+          document.getElementById("flagOn").style.display = "block";
+          document.getElementById("flagOff").style.display = "none";
+        }
+      }
+      function shiftUpHandler(event) {
+        if(event.keyCode == 16) {
+          shiftButtonpressed = false;
+          document.getElementById("flagOn").style.display = "none";
+          document.getElementById("flagOff").style.display = "block";
+        }
+      }
+      function difficultySetting(which) {
+        if(which === "easy") {
+          difficultyLevel = Math.round(.08*(height*width));
+        }
+        if(which === "normal") {
+          difficultyLevel = Math.round(.12*(height*width));
+        }
+        if(which === "difficult") {
+          difficultyLevel = Math.round(.2*(height*width)); 
+        }
+      }
+      function openOptions() {
+        optionsScreen.style.display = "block";
+        if(document.getElementById("easy").checked === true) {
+          currentMode = "easy";  
+        }
+        if(document.getElementById("normal").checked === true) {
+          currentMode = "normal";  
+        }
+        if(document.getElementById("difficult").checked === true) {
+          currentMode = "difficult";  
+        }
+      }
+      function openControls() {
+        controlsScreen.style.display = "block";  
+      }
+      function openInstructions() {
+        instructionsScreen.style.display = "block";  
+      }
+      function clickCloseOptions() {
+        optionsScreen.style.display = "none";
+        if(currentMode === "easy") {
+          document.getElementById("easy").checked = true;
+          difficultySetting("easy");
+        }
+        if(currentMode === "normal") {
+          document.getElementById("normal").checked = true;
+          difficultySetting("normal");
+        }
+        if(currentMode === "difficult") {
+          document.getElementById("difficult").checked = true;
+          difficultySetting("difficult");
+        }
+        document.getElementById("height").value = height;
+        document.getElementById("width").value = width;
+      }
+      function clickClose() {
+        controlsScreen.style.display = "none"; 
+        instructionsScreen.style.display = "none";
+      }
+      function newGame() {
+        if(document.getElementById("width").value>0) {
+          width = document.getElementById("width").value;
+        } else {
+          alert("Please enter a width that is a number greater than 0");  
+          canCreate = false;
+        }
+        if(document.getElementById("height").value>0) {
+          height = document.getElementById("height").value;
+        } else {
+          alert("Please enter a height that is a number greater than 0"); 
+          canCreate = false;
+        }
+        if(canCreate === true) {
+          canvas.setAttribute("height",height*40);
+          canvas.setAttribute("width",width*40);
+          createGameArray(height,width);
+          if(document.getElementById("easy").checked === true) {
+            difficultySetting("easy");
+          }
+          if(document.getElementById("normal").checked === true) {
+            difficultySetting("normal");
+          }
+          if(document.getElementById("difficult").checked === true) {
+            difficultySetting("difficult");
+          }
+          setBoard(); 
+          optionsScreen.style.display = "none";
+        }
+        canCreate = true;
+        changed = true;
+      }
+      function againButton() {
+        gameOver.style.display = "none";
+        youWon.style.display = "none";
+        setBoard();
+      }
+
+      window.onclick = function(event) {
+        if (event.target == gameOver) {
+          gameOver.style.display = "none";
+        }
+        if (event.target == youWon) {
+          youWon.style.display = "none";
+        }
+        if (event.target == controlsScreen) {
+          controlsScreen.style.display = "none";
+        }
+        if (event.target == instructionsScreen) {
+          instructionsScreen.style.display = "none";  
+        }
+      }
+      window.onload = function() {
+        createGameArray(15,20);
+        document.getElementById("normal").checked = true;
+        setBoard(); 
+      }
+      addEventListener("keydown",shiftDownHandler);
+      addEventListener("keyup",shiftUpHandler);
+      
+    </script>
+  </body>
+</html>
